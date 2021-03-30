@@ -1,0 +1,29 @@
+# Material file for mario_64.obj
+
+newmtl Mariov2_lambert4SG
+	Ns 100
+	d 1
+	illum 2
+	Kd 1.0 1.0 1.0
+	Ks 0.0 0.0 0.0
+	Ka 0.0 0.0 0.0
+	map_Kd colors.png
+
+newmtl lambert2SG
+	Ns 0
+	d 1
+	illum 2
+	Kd 1.0 1.0 1.0
+	Ks 0.0 0.0 0.0
+	Ka 0.0 0.0 0.0
+	map_Kd hat.png
+
+newmtl Mariov2_Mariov2_lambert15SG
+	Ns 0
+	d 1
+	illum 2
+	Kd 1.0 1.0 1.0
+	Ks 0.0 0.0 0.0
+	Ka 0.0 0.0 0.0
+	map_Kd MarioEye.png
+
