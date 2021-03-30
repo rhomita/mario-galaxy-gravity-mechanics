@@ -11,7 +11,12 @@ public class PlayerController : MonoBehaviour
         _rigidbody = transform.GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        // Test.
+        if (Input.GetKey(KeyCode.A))
+        {
+            _rigidbody.AddForce(-transform.right * Time.fixedDeltaTime * 2000, ForceMode.Acceleration);
+        }
     }
 }

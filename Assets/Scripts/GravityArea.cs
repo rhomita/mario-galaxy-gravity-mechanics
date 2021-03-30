@@ -1,30 +1,21 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityArea : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+public abstract class GravityArea : MonoBehaviour
 {
-    [SerializeField] private Vector3 _center;
-
-    private HashSet<GravityBody> _gravityBodies;
-
     void Start()
     {
-        _gravityBodies = new HashSet<GravityBody>();
+        transform.GetComponent<Collider>().isTrigger = true;
     }
     
-    void Update()
-    {
-        foreach (GravityBody gravityBody in _gravityBodies)
-        {
-            gravityBody.SetGravityDirection((_center - gravityBody.transform.position).normalized);
-        }
-    }
+    public abstract Vector3 GetGravityDirection(GravityBody _gravityBody);
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out GravityBody gravityBody))
         {
-            _gravityBodies.Add(gravityBody);
+            gravityBody.AddGravityArea(this);
         }
     }
     
@@ -32,7 +23,7 @@ public class GravityArea : MonoBehaviour
     {
         if (other.TryGetComponent(out GravityBody gravityBody))
         {
-            _gravityBodies.Remove(gravityBody);
+            gravityBody.RemoveGravityArea(this);
         }
     }
 }

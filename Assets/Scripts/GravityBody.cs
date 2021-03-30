@@ -1,14 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GravityBody : MonoBehaviour
 {
+    public Vector3 GravityDirection
+    {
+        get
+        {
+            if (_gravityAreas.Count == 0) return Vector3.zero;
+            return _gravityAreas.Last().GetGravityDirection(this);
+        }
+    }
+
     private Rigidbody _rigidbody;
-    public Vector3 GravityDirection { get; private set; }
+    private List<GravityArea> _gravityAreas;
 
     void Start()
     {
         _rigidbody = transform.GetComponent<Rigidbody>();
+        _gravityAreas = new List<GravityArea>();
     }
     
     void FixedUpdate()
@@ -20,9 +32,13 @@ public class GravityBody : MonoBehaviour
         _rigidbody.MoveRotation(newRotation);
     }
 
-    public void SetGravityDirection(Vector3 direction)
+    public void AddGravityArea(GravityArea gravityArea)
     {
-        direction = direction.normalized; // It is probably normalized, we do it again just in case.
-        GravityDirection = direction;
+        _gravityAreas.Add(gravityArea);
+    }
+
+    public void RemoveGravityArea(GravityArea gravityArea)
+    {
+        _gravityAreas.Remove(gravityArea);
     }
 }
