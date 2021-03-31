@@ -4,19 +4,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private Transform _cam;
+    [SerializeField] private Animator _animator;
+    
+    private float _groundCheckRadius = 0.15f;
+    private float _speed = 8;
+    private float _turnSpeed = 1000f;
+
     private Rigidbody _rigidbody;
+    private Vector3 _direction;
     
     void Start()
     {
         _rigidbody = transform.GetComponent<Rigidbody>();
     }
 
+    void Update()
+    {
+        _direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
+        bool isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundMask);
+        _animator.SetBool("isJumping", !isGrounded);
+    }
+    
     void FixedUpdate()
     {
-        // Test.
-        if (Input.GetKey(KeyCode.A))
+        bool isRunning = _direction.magnitude > 0.1f;
+        
+        if (isRunning)
         {
-            _rigidbody.AddForce(-transform.right * Time.fixedDeltaTime * 2000, ForceMode.Acceleration);
+            Vector3 direction = transform.forward * _direction.z;
+            _rigidbody.MovePosition(_rigidbody.position + direction * (_speed * Time.fixedDeltaTime));
+            
+            Quaternion rightDirection = Quaternion.Euler(0f, _direction.x * (_turnSpeed * Time.fixedDeltaTime), 0f);
+            Quaternion newRotation = Quaternion.Slerp(_rigidbody.rotation, rightDirection * _rigidbody.rotation, Time.fixedDeltaTime * 3f);;
+            _rigidbody.MoveRotation(newRotation);
         }
+
+        _animator.SetBool("isRunning", isRunning);
     }
 }
