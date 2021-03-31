@@ -8,6 +8,6 @@ public class GravityAreaPoint : GravityArea
     
     public override Vector3 GetGravityDirection(GravityBody _gravityBody)
     {
-        return _center - _gravityBody.transform.position;
+        return (_center - _gravityBody.transform.position).normalized;
     }
 }

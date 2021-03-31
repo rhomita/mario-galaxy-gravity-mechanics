@@ -11,14 +11,18 @@ public class PlayerController : MonoBehaviour
     
     private float _groundCheckRadius = 0.15f;
     private float _speed = 8;
-    private float _turnSpeed = 1000f;
+    private float _turnSpeed = 1500f;
+    private float _jumpForce = 500f;
 
     private Rigidbody _rigidbody;
     private Vector3 _direction;
+
+    private GravityBody _gravityBody;
     
     void Start()
     {
         _rigidbody = transform.GetComponent<Rigidbody>();
+        _gravityBody = transform.GetComponent<GravityBody>();
     }
 
     void Update()
@@ -26,6 +30,11 @@ public class PlayerController : MonoBehaviour
         _direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
         bool isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundMask);
         _animator.SetBool("isJumping", !isGrounded);
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            _rigidbody.AddForce(-_gravityBody.GravityDirection * _jumpForce, ForceMode.Impulse);
+        }
     }
     
     void FixedUpdate()
