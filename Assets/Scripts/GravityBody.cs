@@ -12,7 +12,8 @@ public class GravityBody : MonoBehaviour
         get
         {
             if (_gravityAreas.Count == 0) return Vector3.zero;
-            return _gravityAreas.Last().GetGravityDirection(this).normalized;
+            _gravityAreas.Sort((area1, area2) => area2.Priority.CompareTo(area1.Priority));
+            return _gravityAreas[0].GetGravityDirection(this).normalized;
         }
     }
 

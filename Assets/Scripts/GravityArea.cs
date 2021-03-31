@@ -4,6 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class GravityArea : MonoBehaviour
 {
+    [SerializeField] private int _priority;
+    public int Priority => _priority;
+    
     void Start()
     {
         transform.GetComponent<Collider>().isTrigger = true;
