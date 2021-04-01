@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
             _rigidbody.MovePosition(_rigidbody.position + direction * (_speed * Time.fixedDeltaTime));
             
             Quaternion rightDirection = Quaternion.Euler(0f, _direction.x * (_turnSpeed * Time.fixedDeltaTime), 0f);
-            Quaternion newRotation = Quaternion.Slerp(_rigidbody.rotation, rightDirection * _rigidbody.rotation, Time.fixedDeltaTime * 3f);;
+            Quaternion newRotation = Quaternion.Slerp(_rigidbody.rotation, _rigidbody.rotation * rightDirection, Time.fixedDeltaTime * 3f);;
             _rigidbody.MoveRotation(newRotation);
         }
 
